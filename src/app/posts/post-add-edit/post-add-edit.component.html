@@ -1,0 +1,104 @@
+<mat-card *ngIf="postForm">
+  <mat-card-header>
+    <h2>{{ !isEdit ? "Add" : "Update" }} Post.</h2>
+  </mat-card-header>
+  <form [formGroup]="postForm" (ngSubmit)="onSubmit(postForm)">
+    <!-- Title -->
+    <mat-form-field class="example-full-width" appearance="outline">
+      <mat-label>Title</mat-label>
+      <input formControlName="title" matInput placeholder="Title" />
+      <mat-error *ngFor="let validation of postFormValidations.title">
+        <mat-error *ngIf="handleError('title', validation.type, postForm)">
+          {{ validation.message }}
+        </mat-error>
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Description -->
+    <mat-form-field class="example-full-width" appearance="outline">
+      <mat-label>Description</mat-label>
+      <textarea
+        matInput
+        formControlName="description"
+        placeholder="Ex. It makes me feel..."
+      ></textarea>
+      <mat-error *ngFor="let validation of postFormValidations.description">
+        <mat-error
+          *ngIf="handleError('description', validation.type, postForm)"
+        >
+          {{ validation.message }}
+        </mat-error>
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Tags -->
+    <mat-form-field class="example-chip-list" appearance="outline">
+      <mat-label>Tags</mat-label>
+      <mat-chip-list
+        #chipList
+        formControlName="tags"
+        aria-label="Fruit selection"
+      >
+        <mat-chip *ngFor="let tag of tags" (removed)="removeTag(tag)">
+          {{ tag }}
+          <button matChipRemove>
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </mat-chip>
+        <input
+          placeholder="New Tag..."
+          [matChipInputFor]="chipList"
+          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+          [matChipInputAddOnBlur]="addOnBlur"
+          (matChipInputTokenEnd)="add($event)"
+        />
+      </mat-chip-list>
+      <mat-error *ngFor="let validation of postFormValidations.tags">
+        <mat-error *ngIf="handleError('tags', validation.type, postForm)">
+          {{ validation.message }}
+        </mat-error>
+      </mat-error>
+    </mat-form-field>
+
+    <!-- User -->
+    <mat-form-field appearance="outline">
+      <mat-label>User</mat-label>
+      <mat-select formControlName="user">
+        <mat-option *ngFor="let user of users" [value]="user._id">
+          {{ user.firstname }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngFor="let validation of postFormValidations.user">
+        <mat-error *ngIf="handleError('user', validation.type, postForm)">
+          {{ validation.message }}
+        </mat-error>
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Images -->
+    <div>
+      <button type="button" mat-stroked-button (click)="filePicker.click()">
+        Pick Image
+      </button>
+      <input type="file" multiple #filePicker (change)="imagePicked($event)" />
+      <div class="image-preview" *ngIf="files">
+        <img
+          *ngFor="let url of files"
+          [src]="url"
+          [alt]="this.postForm.get('title')?.value"
+          accept="image/*"
+          height="150"
+          width="200px"
+          style="margin: 3px"
+        />
+      </div>
+      <mat-error *ngFor="let validation of postFormValidations.images">
+        <mat-error *ngIf="handleError('images', validation.type, postForm)">
+          {{ validation.message }}
+        </mat-error>
+      </mat-error>
+    </div>
+
+    <button mat-button type="submit">{{ !isEdit ? "Add" : "Update" }}</button>
+  </form>
+</mat-card>

@@ -1,0 +1,54 @@
+<button type="button" routerLink="new" mat-raised-button class="add_button">
+  Add User
+</button>
+<span *ngIf="users.length">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">FirstName</th>
+        <th scope="col">LastName</th>
+        <th scope="col">Email</th>
+        <th scope="col">Phone</th>
+        <th scope="col">Date Of Birth</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of users; index as i">
+        <th scope="row">{{ i + 1 }}</th>
+        <td>
+          {{ user.firstname }}
+        </td>
+        <td>
+          {{ user.lastname }}
+        </td>
+        <td>
+          {{ user.email }}
+        </td>
+        <td>{{ user.phone | number }}</td>
+        <td>{{ user.dob | date: "mediumDate" }}</td>
+        <td>
+          <button
+            mat-raised-button
+            type="button"
+            [routerLink]="['edit', user._id]"
+          >
+            Edit
+          </button>
+          <button mat-raised-button type="button" (click)="onDelete(user)">
+            Delete
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <mat-paginator
+    [length]="totalUsers"
+    [pageSize]="usersPerpage"
+    [pageSizeOptions]="pageSizeOptions"
+    (page)="pageChanged($event)"
+  >
+  </mat-paginator>
+</span>
+<p *ngIf="users.length <= 0">No Users added yet!</p>

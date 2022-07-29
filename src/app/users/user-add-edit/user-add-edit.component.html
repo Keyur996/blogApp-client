@@ -1,0 +1,84 @@
+<mat-card *ngIf="userForm">
+  <mat-card-header>
+    <h2>{{ !isEdit ? "Add" : "Update" }} User.</h2>
+  </mat-card-header>
+  <form [formGroup]="userForm" (ngSubmit)="onSubmit(userForm)">
+    <!-- First Name -->
+    <mat-form-field class="example-full-width" appearance="outline">
+      <mat-label>First Name</mat-label>
+      <input formControlName="firstname" matInput placeholder="First Name" />
+      <mat-error *ngFor="let validation of userFormsValidations.firstName">
+        <mat-error *ngIf="handleError('firstname', validation.type, userForm)">
+          {{ validation.message }}
+        </mat-error>
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Last Name -->
+    <mat-form-field class="example-full-width" appearance="outline">
+      <mat-label>Last Name</mat-label>
+      <input formControlName="lastname" matInput placeholder="Last Name" />
+      <mat-error *ngFor="let validation of userFormsValidations.lastName">
+        <mat-error *ngIf="handleError('lastname', validation.type, userForm)">
+          {{ validation.message }}
+        </mat-error>
+      </mat-error>
+    </mat-form-field>
+
+    <!-- email -->
+    <mat-form-field class="example-full-width" appearance="outline">
+      <mat-label>Email</mat-label>
+      <input
+        formControlName="email"
+        matInput
+        placeholder="Enter email"
+        required
+      />
+      <mat-error *ngFor="let validation of userFormsValidations.email">
+        <mat-error *ngIf="handleError('email', validation.type, userForm)">
+          {{ validation.message }}
+        </mat-error>
+      </mat-error>
+    </mat-form-field>
+
+    <!-- phone -->
+    <mat-form-field class="example-full-width" appearance="outline">
+      <mat-label>Phone</mat-label>
+      <input
+        formControlName="phone"
+        matInput
+        placeholder="Enter Phone"
+        type="number"
+        required
+        minlength="10"
+        maxlength="10"
+      />
+      <mat-error *ngFor="let validation of userFormsValidations.phone">
+        <mat-error *ngIf="handleError('phone', validation.type, userForm)">
+          {{ validation.message }}
+        </mat-error>
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Birth Date -->
+    <mat-form-field class="example-full-width" appearance="outline">
+      <mat-label>Birth Day</mat-label>
+      <input
+        formControlName="dob"
+        matInput
+        readonly
+        [matDatepicker]="picker"
+        required
+      />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+      <mat-error *ngFor="let validation of userFormsValidations.dob">
+        <mat-error *ngIf="handleError('dob', validation.type, userForm)">
+          {{ validation.message }}
+        </mat-error>
+      </mat-error>
+    </mat-form-field>
+
+    <button mat-button type="submit">{{ !isEdit ? "Add" : "Update" }}</button>
+  </form>
+</mat-card>

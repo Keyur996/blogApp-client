@@ -1,0 +1,18 @@
+<div class="example-container">
+  <mat-toolbar color="primary" class="example-toolbar">
+    <button mat-icon-button (click)="drawer.toggle()">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <h1 class="example-app-name">Blog App</h1>
+  </mat-toolbar>
+
+  <mat-drawer-container class="example-sidenav-container">
+    <mat-drawer opened mode="side" class="example-sidenav" #drawer>
+      <p routerLink="home/users">Users</p>
+      <p routerLink="home/posts">Posts</p>
+    </mat-drawer>
+    <div>
+      <router-outlet></router-outlet>
+    </div>
+  </mat-drawer-container>
+</div>
